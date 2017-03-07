@@ -1,5 +1,5 @@
 /* 
- * 2_1.cpp
+ * 2_4.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -35,23 +35,26 @@
 
 
 #include "node.h"
-#include <algorithm>
 #include <cstdio>
 #include <iostream>
 #include <random>
-#include <vector>
 
 
-void removeOverlap(Node* head) {
-  Node* n = head;
-  std::vector<int> m_list = {n->data};
+void divideHighLow(Node *head, int k) {
+  Node *border = nullptr;
+  Node *n = head;
   while (n->next != nullptr) {
-    if (find(m_list.begin(), m_list.end(), n->next->data) != m_list.end())
+    if (n->data < k && n->next->data >= k)
+      border = n;
+    if (n->data >= k && n->next->data < k) {
+      Node *tmp = border->next;
+      border->next = n->next;
       n->next = n->next->next;
-    else {
-      m_list.push_back(n->next->data);
-      n = n->next;
+      border->next->next = tmp;
+      border = border->next;
+      continue;
     }
+    n = n->next;
   }
 }
 
@@ -61,7 +64,7 @@ int main() {
   std::random_device rnd;
   std::mt19937 mt(rnd());
   std::uniform_int_distribution<> rand10(0, 9);
-  for (int i = 0; i < 30; i++)
+  for (int i = 0; i < 10; i++)
     head->appendToTail(rand10(mt));
   std::cout << "before" << std::endl;
   Node* n = head;
@@ -70,7 +73,7 @@ int main() {
     n = n->next;
   }
   std::cout << "after" << std::endl;
-  removeOverlap(head);
+  divideHighLow(head, 5);
   n = head;
   while (n != nullptr) {
     std::cout << n->data << std::endl;
