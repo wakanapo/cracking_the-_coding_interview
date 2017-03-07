@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: set fileencoding=utf-8 :
 #
-# 2_1.py
+# node.py
 # 
 # Author:   Wakana Nogami <wakana.tn16@gmail.com>
 # URL:      https://wknp16.tumblr.com               
@@ -36,32 +36,15 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
-import random
-import node 
 
-def removeOverlap(head):
-    n = head
-    m_list = [n.data]
-    while n.next != None:
-        if n.next.data in m_list:
-            n.next = n.next.next
-        else:
-            m_list.append(n.next.data)
+class Node:
+    def __init__(self, d):
+        self.data = d
+        self.next = None
+
+    def appendToTail(self, d):
+        end = Node(d)
+        n = self
+        while n.next != None:
             n = n.next
-    return head
-
-
-if __name__ == '__main__':
-    connectList = node.Node(1)
-    for i in range(30):
-        connectList.appendToTail(random.randint(0, 9))
-    n = connectList
-    print ('before')
-    while n != None:
-        print (n.data)
-        n = n.next
-    n = removeOverlap(connectList)
-    print ('remove overlap')
-    while n != None:
-        print (n.data)
-        n = n.next
+        n.next = end
