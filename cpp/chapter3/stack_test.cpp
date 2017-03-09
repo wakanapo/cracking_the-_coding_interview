@@ -1,10 +1,10 @@
 /* 
- * 2_7.cpp
+ * stack_test.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
- * Created:  2017-03-08                              
+ * Created:  2017-03-09                              
  *
  *
  * Copyright (c) 2017, Wakana Nogami
@@ -34,46 +34,22 @@
  */
 
 
-#include "node.h"
-#include <cstdio>
+#include "stack.h"
 #include <iostream>
-#include <stack>
-
-
-std::stack<Node*>* addressStack(Node* head) {
-  Node* n = head;
-  std::stack<Node*>* addr = new std::stack<Node*>;
-  while (n != nullptr) {
-    addr->push(n);
-    n = n->next;
-  }
-  return addr;
-}
-
-
-Node* commonNode(Node* n1, Node* n2) {
-  std::stack<Node*>* addr_n1 = addressStack(n1);
-  std::stack<Node*>* addr_n2 = addressStack(n2);
-  Node* common = nullptr;
-  while (!addr_n1->empty() && !addr_n2->empty()) {
-    if (addr_n1->top() != addr_n2->top())
-      break;
-    common = addr_n1->top();
-    addr_n1->pop();
-    addr_n2->pop();
-  }
-  return common;
-}
 
 
 int main() {
-  Node* n1 = new Node(1);
-  n1->appendToTail(2);
-  n1->appendToTail(3);
-  n1->appendToTail(4);
-  Node* n2 = new Node(5);
-  n2->appendToTail(6);
-  n2->next->next = n1->next;
-  Node* common = commonNode(n1, n2);
-  common->printNode();
+  Stack* intStack = new Stack();
+  if (intStack->peek() == NULL)
+    std::cout << "New: Success." << std::endl;
+  intStack->push(1);
+  intStack->push(2);
+  if (intStack->peek() == 2)
+    std::cout << "Push: Success." << std::endl;
+  intStack->pop();
+  if (intStack->peek() == 1)
+    std::cout << "Pop: Success." << std::endl;
+  intStack->pop();
+  if (intStack->isEmpty())
+    std::cout << "isEmpty: Success." << std::endl;
 }
