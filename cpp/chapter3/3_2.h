@@ -34,24 +34,21 @@
  */
 
 
-#ifndef __STACK_INC__
-#define __STACK_INC__
+#ifndef __MINSTACK_INC__
+#define __MINSTACK_INC__
 
-class StackNode {
-public:
-  int data_;
-  StackNode* next_;
-  StackNode(int);
-};
+#include "stack.h"
+#include <cstdio>
+#include <stack>
 
-class Stack {
+class MinStack : public Stack {
+private:
+  std::stack<StackNode*> min_;
 public:
-  Stack();
-  StackNode* top;
+  MinStack();
+  int min();
   void push(int);
   void pop();
-  int peek();
-  bool isEmpty();
 };
 
 #endif

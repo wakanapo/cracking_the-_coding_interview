@@ -1,8 +1,8 @@
 /* 
- * stack.h
+ * stack.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
- * URL:      https://wknp16.tumblr.com               
+ * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
  * Created:  2017-03-09                              
  *
@@ -34,24 +34,35 @@
  */
 
 
-#ifndef __STACK_INC__
-#define __STACK_INC__
+#include "3_2.h"
+#include <cstdio>
+#include <iostream>
 
-class StackNode {
-public:
-  int data_;
-  StackNode* next_;
-  StackNode(int);
-};
+MinStack::MinStack() {
+  top = nullptr;
+}
 
-class Stack {
-public:
-  Stack();
-  StackNode* top;
-  void push(int);
-  void pop();
-  int peek();
-  bool isEmpty();
-};
+void MinStack::push(int data) {
+  StackNode* new_node = new StackNode(data);
+  new_node->next_ = top;
+  top = new_node;
+  if (min_.empty() || data < min_.top()->data_)
+    min_.push(top);
+}
 
-#endif
+void MinStack::pop() {
+  if (top != nullptr) {
+    StackNode* tmp = top;
+    if (min_.top() == top)
+      min_.pop();
+    top = top->next_;
+    delete tmp;
+  }
+}
+
+int MinStack::min() {
+  if (!min_.empty())
+    return min_.top()->data_;
+  else
+    return NULL;
+}

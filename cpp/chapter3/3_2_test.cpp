@@ -1,8 +1,8 @@
 /* 
- * stack.h
+ * 3_2_test.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
- * URL:      https://wknp16.tumblr.com               
+ * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
  * Created:  2017-03-09                              
  *
@@ -34,24 +34,28 @@
  */
 
 
-#ifndef __STACK_INC__
-#define __STACK_INC__
+#include "3_2.h"
+#include <iostream>
 
-class StackNode {
-public:
-  int data_;
-  StackNode* next_;
-  StackNode(int);
-};
 
-class Stack {
-public:
-  Stack();
-  StackNode* top;
-  void push(int);
-  void pop();
-  int peek();
-  bool isEmpty();
-};
+int main() {
+  MinStack* intStack = new MinStack();
+  intStack->push(5);
+  intStack->push(3);
+  intStack->push(4);
+  if (intStack->min() == 3)
+    std::cout << "min: Success!" << std::endl;
+  intStack->push(2);
+  if (intStack->min() == 2)
+    std::cout << "push: Success!" << std::endl;
+  intStack->pop();
+  if (intStack->min() == 3)
+    std::cout << "pop: Success!" << std::endl;
+   intStack->pop();
+  if (intStack->min() == 3)
+    std::cout << "pop: Success!" << std::endl;
+  intStack->pop();
+  if (intStack->min() == 5)
+    std::cout << "pop: Success!" << std::endl;
+}
 
-#endif

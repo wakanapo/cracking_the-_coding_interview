@@ -43,28 +43,32 @@ StackNode::StackNode(int data) {
   next_ = nullptr;
 }
 
+Stack::Stack() {
+  top = nullptr;
+}
+
 void Stack::push(int data) {
   StackNode* new_node = new StackNode(data);
-  new_node->next_ = top_;
-  top_ = new_node;
+  new_node->next_ = top;
+  top = new_node;
 }
 
 void Stack::pop() {
-  if (top_ != nullptr) {
-    StackNode* tmp = top_;
-    top_ = top_->next_;
+  if (top != nullptr) {
+    StackNode* tmp = top;
+    top = top->next_;
     delete tmp;
   }
 }
 
 int Stack::peek() {
-  if (top_ == nullptr)
+  if (top == nullptr)
     return NULL;
-  return top_->data_;
+  return top->data_;
 }
 
 bool Stack::isEmpty() {
-  if (top_ == nullptr)
+  if (top == nullptr)
     return true;
   else
     return false;
