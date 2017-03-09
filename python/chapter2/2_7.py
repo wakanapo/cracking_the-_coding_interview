@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 # vim: set fileencoding=utf-8 :
 #
-# node.py
+# 2_7.py
 # 
 # Author:   Wakana Nogami <wakana.tn16@gmail.com>
 # URL:      https://wknp16.tumblr.com               
 # License:  2-Clause BSD License                    
-# Created:  2017-03-07                              
+# Created:  %date%                              
 #
 #
-# Copyright (c) 2017, Wakana Nogami
+# Copyright (c) %year%, Wakana Nogami
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -36,21 +36,38 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
+import node
 
-class Node:
-    def __init__(self, d):
-        self.data = d
-        self.next = None
 
-    def appendToTail(self, d):
-        end = Node(d)
-        n = self
-        while n.next != None:
-            n = n.next
-        n.next = end
+def addressStack(head):
+  n = head
+  stack = []
+  while (n != None):
+    stack.append(n)
+    n = n.next
+  return stack
 
-    def printNode(self):
-        n = self
-        while n != None:
-            print (n.data)
-            n = n.next
+
+def commonNode(n1, n2):
+  addr_n1 = addressStack(n1)
+  addr_n2 = addressStack(n2)
+  common = None
+  while (len(addr_n1) * len(addr_n2) > 0):
+    a1 = addr_n1.pop()
+    a2 = addr_n2.pop()
+    if a1 != a2:
+      break
+    common = a1
+  return common
+
+
+if __name__ == '__main__':
+  n1 = node.Node(1)
+  n1.appendToTail(2)
+  n1.appendToTail(3)
+  n1.appendToTail(4)
+  n2 = node.Node(5)
+  n2.appendToTail(6)
+  n2.next.next = n1.next
+  common = commonNode(n1, n2)
+  common.printNode()

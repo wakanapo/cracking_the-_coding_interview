@@ -43,6 +43,7 @@ public:
   Node* next;
   Node(int d);
   void appendToTail(int d);
+  void printNode();
 };
 
 #endif //INC_NODE
