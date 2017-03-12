@@ -1,5 +1,5 @@
 /* 
- * 4_2.cpp
+ * 4_3.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -33,10 +33,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #include "tree.h"
 
-#include <vector>
 #include <iostream>
+#include <vector>
+
+class List {
+public:
+  List();
+  Node* node;
+  List* next;
+  void append(Node*);
+};
+
+List::List() {
+  node = nullptr;
+  next = nullptr;
+}
+
+void List::append(Node* n) {
+  if (this->node == nullptr)
+    this->node = n;
+  else {
+    List* list = this;
+    while (list->next != nullptr)
+      list = list->next;
+    list->next = new List();
+    list->next->node = n;
+  }
+}
+
+
+std::vector<List*>* MakeList(Node* tree) {
+  std::vector<List*>* lists = new std::vector<List*>;
+  List* list = new List();
+  list->append(tree);
+  lists->push_back(list);
+  while (1) {
+    List* new_list = new List();
+    while (list != nullptr) {
+      Node* now = list->node;
+      if (now->left != nullptr) 
+        new_list->append(now->left);
+      if (now->right != nullptr)
+        new_list->append(now->right);
+      list = list->next;
+    }
+    if (new_list->node == nullptr)
+      break;
+    list = new_list;
+    lists->push_back(list);
+  }
+  return lists;
+}
 
 
 Node* SmallTree(std::vector<int> v) {
@@ -55,18 +105,14 @@ Node* SmallTree(std::vector<int> v) {
 
 int main() {
   std::vector<int> v1 = {1, 2, 3, 4, 5, 6, 7};
-  std::vector<int> v2 = {1, 2, 3, 4, 5, 6};
-  Node* tree1 = SmallTree(v1);
-  Node* tree2 = SmallTree(v2);
-  std::cout << tree1->value << std::endl;                                      // 4
-  std::cout << tree1->left->value << " " << tree1->right->value << std::endl;  // 2 6 
-  std::cout << tree1->left->left->value << " "                                 // 1 3 5 7
-            << tree1->left->right->value << " "
-            << tree1->right->left->value << " "
-            << tree1->right->right->value << std::endl;
-  std::cout << tree2->value << std::endl;                                      // 4
-  std::cout << tree2->left->value << " " << tree2->right->value << std::endl;  // 2 6
-  std::cout << tree2->left->left->value << " "                                 // 1 3 5
-            << tree2->left->right->value << " "
-            << tree2->right->left->value  << std::endl;
+  Node* tree = SmallTree(v1);
+  std::vector<List*>* lists = MakeList(tree);
+  for (auto list : *lists) {
+    List* now = list;
+    while (now != nullptr) {
+      std::cout << now->node->value << " ";
+      now = now->next;
+    }
+    std::cout << std::endl;
+  }
 }

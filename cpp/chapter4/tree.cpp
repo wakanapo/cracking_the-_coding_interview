@@ -1,5 +1,5 @@
 /* 
- * 4_2.cpp
+ * tree.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -33,40 +33,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #include "tree.h"
 
-#include <vector>
-#include <iostream>
 
-
-Node* SmallTree(std::vector<int> v) {
-  int size = v.size(); 
-  int middle = size / 2; 
-  Node* node = new Node(v[middle]);
-  if (middle > 0) {
-    node->left = SmallTree(std::vector<int>(v.begin(), v.begin() + middle));
-    if (middle + 1 < size)
-      node->right = SmallTree(
-        std::vector<int>(v.begin() + middle + 1, v.end()));
-  }
-  return node;
-}
-
-
-int main() {
-  std::vector<int> v1 = {1, 2, 3, 4, 5, 6, 7};
-  std::vector<int> v2 = {1, 2, 3, 4, 5, 6};
-  Node* tree1 = SmallTree(v1);
-  Node* tree2 = SmallTree(v2);
-  std::cout << tree1->value << std::endl;                                      // 4
-  std::cout << tree1->left->value << " " << tree1->right->value << std::endl;  // 2 6 
-  std::cout << tree1->left->left->value << " "                                 // 1 3 5 7
-            << tree1->left->right->value << " "
-            << tree1->right->left->value << " "
-            << tree1->right->right->value << std::endl;
-  std::cout << tree2->value << std::endl;                                      // 4
-  std::cout << tree2->left->value << " " << tree2->right->value << std::endl;  // 2 6
-  std::cout << tree2->left->left->value << " "                                 // 1 3 5
-            << tree2->left->right->value << " "
-            << tree2->right->left->value  << std::endl;
+Node::Node(int date) {
+  value = date;
+  left = nullptr;
+  right = nullptr;
 }
