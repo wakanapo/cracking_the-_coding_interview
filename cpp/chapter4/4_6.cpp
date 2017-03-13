@@ -1,8 +1,8 @@
 /* 
- * tree.h
+ * 4_6.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
- * URL:      https://wknp16.tumblr.com               
+ * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
  * Created:  2017-03-12                              
  *
@@ -34,14 +34,42 @@
  */
 
 
-#pragma once
+#include "tree.h"
 
-class Node {
-public:
-  Node(int);
-  int value;
-  Node* parent;
-  Node* left;
-  Node* right;
-};
+#include <iostream>
 
+
+Node* NextNode(Node* n) {
+  if (n->right != nullptr) {
+    n = n->right;
+    while (n->left != nullptr)
+      n = n->left;
+    return n;
+  }
+  while (n->parent->left != n) {
+    n = n->parent;
+    if (n->parent == nullptr)
+      return nullptr;
+  }
+  return n->parent;
+}
+
+
+int main() {
+  Node* tree = new Node(4);
+  tree->left = new Node(2);
+  tree->left->parent = tree;
+  tree->right = new Node(6);
+  tree->right->parent = tree;
+  tree->left->left = new Node(1);
+  tree->left->left->parent = tree->left;
+  tree->left->right = new Node(3);
+  tree->left->right->parent = tree->left;
+  tree->right->left = new Node(5);
+  tree->right->left->parent = tree->right;
+  Node* n = tree->left->left;
+  while (n != nullptr) {
+    std::cout << n->value << std::endl;
+    n = NextNode(n);
+  }
+}

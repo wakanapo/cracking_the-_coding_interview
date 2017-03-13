@@ -39,6 +39,7 @@
 
 Node::Node(int date) {
   value = date;
+  parent = nullptr;
   left = nullptr;
   right = nullptr;
 }
