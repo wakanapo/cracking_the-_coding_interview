@@ -1,5 +1,5 @@
 /* 
- * 5_5.cpp
+ * 5_6.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -36,30 +36,20 @@
 
 #include <bitset>
 #include <iostream>
+#include <string>
 
 
-int CountChange(int a, int b) {
-  std::bitset<32> bin_a(a);
-  std::bitset<32> bin_b(b);
-  std::bitset<32> aXORb = bin_a ^ bin_b;
-  int cnt = 0;
-  for (int i = 0; i < 32; i++) {
-    if (aXORb[i] == 1)
-      cnt++;
-  }
-  return cnt;
+std::bitset<32> SwitchOddEvenBit(std::bitset<32> bin) {
+  std::bitset<32> oddMask("10101010101010101010101010101010");
+  std::bitset<32> evenMask = ~oddMask;
+  std::bitset<32> odd = oddMask & bin;
+  std::bitset<32> even = evenMask & bin;
+  return (odd >> 1) | (even << 1);
 }
 
-int bitSwapRequired(int a, int b) {
-  int count = 0;
-  for (int c = a ^ b; c != 0; c = c & (c - 1))
-    count++;
-  return count;
-}
 
 int main() {
-  int a, b;
-  std::cin >> a >> b;
-  std::cout << CountChange(a, b) << std::endl;
-  std::cout << bitSwapRequired(a, b) << std::endl;
+  std::bitset<32> bin;
+  std::cin >> bin;
+  std::cout << SwitchOddEvenBit(bin) << std::endl;
 }

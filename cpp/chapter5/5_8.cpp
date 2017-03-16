@@ -1,5 +1,5 @@
 /* 
- * 5_5.cpp
+ * 5_8.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -38,20 +38,25 @@
 #include <iostream>
 
 
-int CountChange(int a, int b) {
-  std::bitset<32> bin_a(a);
-  std::bitset<32> bin_b(b);
-  std::bitset<32> aXORb = bin_a ^ bin_b;
-  int cnt = 0;
-  for (int i = 0; i < 32; i++) {
-    if (aXORb[i] == 1)
-      cnt++;
-  }
-  return cnt;
+void DrawLine(char* screen, int width, int x1, int x2, int y) {
+  if (x1 > x2) {
+    int tmp = x1;
+    x1 = x2;
+    x2 = tmp;
+  }    
+  if (x1 < 0 || x2 >= width)
+    return;
+  for (int i = y * width + x1; i <= y * width + x2; i++)
+    screen[i] = 1;
 }
 
 int main() {
-  int a, b;
-  std::cin >> a >> b;
-  std::cout << CountChange(a, b) << std::endl;
+  const int width = 10; 
+  char screen[width * width] = {};
+  DrawLine(screen, width, 1, 8, 5);
+  for (int i = 1; i <= 100; i++) {
+    std::cout << +screen[i-1];
+    if (i % 10 == 0)
+      std::cout << std::endl;
+  }
 }
