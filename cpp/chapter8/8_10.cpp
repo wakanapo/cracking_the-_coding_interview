@@ -1,10 +1,10 @@
 /* 
- * 8_8.cpp
+ * 8_9.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
- * Created:  2017-03-30                              
+ * Created:  2017-03-31                              
  *
  *
  * Copyright (c) 2017, Wakana Nogami
@@ -33,48 +33,49 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <iostream>
-#include <string>
 #include <vector>
 
-struct Bracket {
-  std::string bra;
-  bool sym;
+
+struct Color {
+  int r;
+  int g;
+  int b;
+  bool operator == (const Color &rhs) const {
+    if (r == rhs.r && g == rhs.g && b == rhs.b)
+      return true;
+    return false;
+  }
 };
 
 
-std::vector<Bracket>* BracketsOrder(int n) {
-  std::vector<Bracket>* brackets = new std::vector<Bracket>;
-  if (n == 1) {
-    brackets->push_back({"()", true});
-    return brackets;
-  }
-  for (auto b : *BracketsOrder(n - 1)) {
-    for (int i = 0; i < 3; ++i) {
-     std::string new_s = b.bra;
-     if (i == 0) {
-       new_s.insert(0, "(");
-       new_s.insert(new_s.length(), ")");
-     }
-     else if (i == 1) 
-       new_s.insert(0, "()");
-     else if (i == 2) 
-       new_s.insert(new_s.length(), "()");
-     if (i == 1 && b.sym) {
-       brackets->push_back({new_s, true});
-       break;
-     }
-     brackets->push_back({new_s, false});
+class Paint {
+private:
+  std::vector<std::vector<Color>> screen;
+public:
+  Paint(int x, int y);
+  void FloodFil(int x, int y, Color c);
+};
+
+
+Paint::Paint(int x, int y) {
+  for (int i = 0; i < y; ++i) {
+    for (int j = 0; j < x; ++j) {
+      screen[i][j] = {255, 255, 255};
     }
   }
-  return brackets;
 }
 
 
-int main() {
-  int n;
-  std::cin >> n;
-  for (auto b : *BracketsOrder(n))
-    std::cout << b.bra << std::endl;
+void Paint::FloodFil(int x, int y, Color c) {
+  if (screen[x][y] == screen[x-1][y])
+    FloodFil(x-1, y, c);
+  if (screen[x][y] == screen[x+1][y])
+    FloodFil(x+1, y, c);
+  if (screen[x][y] == screen[x][y-1])
+    FloodFil(x, y-1, c);
+  if (screen[x][y] == screen[x][y+1])
+    FloodFil(x, y+1, c);
+  screen[x][y] = c;
 }
+

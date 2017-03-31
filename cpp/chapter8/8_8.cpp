@@ -1,5 +1,5 @@
 /* 
- * 8_8.cpp
+ * 8_7.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -33,48 +33,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <iostream>
 #include <string>
 #include <vector>
 
-struct Bracket {
-  std::string bra;
-  bool sym;
-};
 
-
-std::vector<Bracket>* BracketsOrder(int n) {
-  std::vector<Bracket>* brackets = new std::vector<Bracket>;
-  if (n == 1) {
-    brackets->push_back({"()", true});
-    return brackets;
+std::vector<std::string> permutation(std::string str) {
+  std::vector<std::string> strs;
+  if (str.length() == 1) {
+    strs.push_back(str);
+    return strs;
   }
-  for (auto b : *BracketsOrder(n - 1)) {
-    for (int i = 0; i < 3; ++i) {
-     std::string new_s = b.bra;
-     if (i == 0) {
-       new_s.insert(0, "(");
-       new_s.insert(new_s.length(), ")");
-     }
-     else if (i == 1) 
-       new_s.insert(0, "()");
-     else if (i == 2) 
-       new_s.insert(new_s.length(), "()");
-     if (i == 1 && b.sym) {
-       brackets->push_back({new_s, true});
-       break;
-     }
-     brackets->push_back({new_s, false});
+  for (auto s : permutation(str.substr(1))) {
+    for (int i = 0; i <= (int)s.length(); ++i) {
+      std::string new_s = s;
+      new_s.insert(i, str.substr(0, 1));
+      strs.push_back(new_s);
     }
   }
-  return brackets;
+  return strs;
 }
 
 
 int main() {
-  int n;
-  std::cin >> n;
-  for (auto b : *BracketsOrder(n))
-    std::cout << b.bra << std::endl;
+  std::string str;
+  std::cin >> str;
+  for (auto s : permutation(str)) {
+    std::cout << s << std::endl;
+  }
 }
