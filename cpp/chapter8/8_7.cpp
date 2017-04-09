@@ -1,5 +1,5 @@
 /* 
- * 8_8.cpp
+ * 8_7.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
@@ -34,44 +34,31 @@
  */
 
 #include <iostream>
-#include <map>
 #include <string>
 #include <vector>
 
 
-std::map<char, int>* buildFreqTable(std::string str) {
-  std::map<char, int>* map = new std::map<char, int>;
-  for (char c : str) {
-    (*map)[c]++;
+std::vector<std::string> permutation(std::string str) {
+  std::vector<std::string> strs;
+  if (str.length() == 1) {
+    strs.push_back(str);
+    return strs;
   }
-  return map;
-}
-
-void printPerms(std::map<char, int>* map, std::string prefix, int remaining,
-                std::vector<std::string>* result) {
-  if (remaining == 0) {
-    result->push_back(prefix);
-    return;
-  }
-
-  for (auto itr = map->begin(); itr != map->end(); ++itr) {
-    int cnt = itr->second;
-    if (cnt > 0) {
-      (*map)[itr->first] = cnt - 1;
-      printPerms(map, prefix + itr->first, remaining - 1, result);
-      (*map)[itr->first] = cnt;
+  for (auto s : permutation(str.substr(1))) {
+    for (int i = 0; i <= (int)s.length(); ++i) {
+      std::string new_s = s;
+      new_s.insert(i, str.substr(0, 1));
+      strs.push_back(new_s);
     }
   }
+  return strs;
 }
 
 
 int main() {
   std::string str;
   std::cin >> str;
-  std::vector<std::string>* result = new std::vector<std::string>;
-  std::map<char, int>* map = buildFreqTable(str);
-  printPerms(map, "", str.length(), result);
-  for (auto s : *result) {
+  for (auto s : permutation(str)) {
     std::cout << s << std::endl;
   }
 }

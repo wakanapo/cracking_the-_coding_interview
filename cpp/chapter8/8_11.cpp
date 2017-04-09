@@ -1,10 +1,10 @@
 /* 
- * 8_8.cpp
+ * 8_11.cpp
  * 
  * Author:   Wakana Nogami <wakana.tn16@gmail.com>
  * URL:      http://wknp16.tumblr.com               
  * License:  2-Clause BSD License                    
- * Created:  2017-03-30                              
+ * Created:  2017-04-03                              
  *
  *
  * Copyright (c) 2017, Wakana Nogami
@@ -32,46 +32,30 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <iostream>
-#include <map>
-#include <string>
 #include <vector>
 
-
-std::map<char, int>* buildFreqTable(std::string str) {
-  std::map<char, int>* map = new std::map<char, int>;
-  for (char c : str) {
-    (*map)[c]++;
+int makeChange(int amount, std::vector<int>* denoms,
+               int index, std::vector<std::vector<int>>* map) {
+  if ((*map)[amount][index] > 0)
+    return (*map)[amount][index];
+  if (index >= (int)denoms->size() - 1)
+    return 1;
+  int denomAmount = (*denoms)[index];
+  int ways = 0;
+  for (int i = 0; i * denomAmount <= amount; ++i) {
+    int amountRemaining = amount - i * denomAmount;
+    ways += makeChange(amountRemaining, denoms, index + 1, map);
   }
-  return map;
+  (*map)[amount][index] = ways;
+  return ways;
 }
-
-void printPerms(std::map<char, int>* map, std::string prefix, int remaining,
-                std::vector<std::string>* result) {
-  if (remaining == 0) {
-    result->push_back(prefix);
-    return;
-  }
-
-  for (auto itr = map->begin(); itr != map->end(); ++itr) {
-    int cnt = itr->second;
-    if (cnt > 0) {
-      (*map)[itr->first] = cnt - 1;
-      printPerms(map, prefix + itr->first, remaining - 1, result);
-      (*map)[itr->first] = cnt;
-    }
-  }
-}
-
 
 int main() {
-  std::string str;
-  std::cin >> str;
-  std::vector<std::string>* result = new std::vector<std::string>;
-  std::map<char, int>* map = buildFreqTable(str);
-  printPerms(map, "", str.length(), result);
-  for (auto s : *result) {
-    std::cout << s << std::endl;
-  }
+  int n;
+  std::cin >> n;
+  std::vector<int> denoms = {25, 10, 5, 1};
+  std::vector<std::vector<int>> map(n+1, std::vector<int>(denoms.size(), 0));
+  std::cout << "Combination: " << makeChange(n, &denoms, 0, &map) << std::endl;
 }
+
